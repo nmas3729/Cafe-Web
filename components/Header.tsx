@@ -1,0 +1,6 @@
+"use client";
+import Link from "next/link";
+import { Menu, ShoppingBag, X } from "lucide-react";
+import { useState } from "react";
+import { useCart } from "./CartProvider";
+export function Header() { const [open, setOpen] = useState(false); const { openCart, items } = useCart(); const links = [["Home", "/"], ["About", "/about"], ["Menu", "/menu"], ["Contact", "/contact"]]; return <header className="site-header"><Link className="wordmark" href="/" onClick={() => setOpen(false)}>EMBER <span>&</span> BEAN</Link><nav className="desktop-nav" aria-label="Main navigation">{links.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav><div className="header-actions"><button className="icon-button bag-button" onClick={openCart} aria-label="Open shopping bag"><ShoppingBag size={19} strokeWidth={1.5} />{items.length > 0 && <b>{items.length}</b>}</button><button className="icon-button mobile-menu-button" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}>{open ? <X size={22} /> : <Menu size={22} />}</button></div>{open && <div className="mobile-menu"><nav aria-label="Mobile navigation">{links.map(([label, href], index) => <Link key={href} href={href} onClick={() => setOpen(false)}><span>0{index + 1}</span>{label}</Link>)}</nav><p>Johannesburg · South Africa<br />Open daily from 07:00</p></div>}</header>; }

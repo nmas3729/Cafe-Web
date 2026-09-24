@@ -1,0 +1,5 @@
+"use client";
+import Link from "next/link";
+import { ArrowDown } from "lucide-react";
+import { motion } from "framer-motion";
+export function Hero() { return <section className="hero"><div className="hero-kicker">Specialty coffee<br />roasted daily</div><motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9, ease: [.22, 1, .36, 1] }} className="display hero-title">Drip<br /><em>day</em></motion.h1><motion.div className="hero-image" initial={{ opacity: 0, scale: .88, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 2 }} transition={{ delay: .25, duration: 1.1, ease: [.22, 1, .36, 1] }} role="img" aria-label="Fresh pour over coffee" /><div className="hero-bottom"><Link href="/menu">Explore the menu <ArrowDown size={17} /></Link><span>Scroll to explore ↓</span></div></section>; }

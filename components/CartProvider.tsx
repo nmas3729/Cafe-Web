@@ -1,0 +1,8 @@
+"use client";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import type { MenuItem } from "@/data/menu";
+type CartLine = MenuItem & { quantity: number };
+type CartContextValue = { items: CartLine[]; isOpen: boolean; openCart: () => void; closeCart: () => void; addItem: (item: MenuItem) => void; updateQuantity: (id: string, amount: number) => void; removeItem: (id: string) => void; subtotal: number };
+const CartContext = createContext<CartContextValue | null>(null);
+export function CartProvider({ children }: { children: ReactNode }) { const [items, setItems] = useState<CartLine[]>([]); const [isOpen, setOpen] = useState(false); const addItem = (item: MenuItem) => { setItems((current) => { const found = current.find((line) => line.id === item.id); return found ? current.map((line) => line.id === item.id ? { ...line, quantity: line.quantity + 1 } : line) : [...current, { ...item, quantity: 1 }]; }); setOpen(true); }; const updateQuantity = (id: string, amount: number) => setItems((current) => current.flatMap((line) => line.id === id ? (line.quantity + amount > 0 ? [{ ...line, quantity: line.quantity + amount }] : []) : [line])); const removeItem = (id: string) => setItems((current) => current.filter((line) => line.id !== id)); return <CartContext.Provider value={{ items, isOpen, openCart: () => setOpen(true), closeCart: () => setOpen(false), addItem, updateQuantity, removeItem, subtotal: items.reduce((sum, item) => sum + item.price * item.quantity, 0) }}>{children}</CartContext.Provider>; }
+export function useCart() { const context = useContext(CartContext); if (!context) throw new Error("useCart must be used within CartProvider"); return context; }
